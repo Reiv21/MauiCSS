@@ -1,0 +1,2 @@
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "LosowankoPytanko")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "LosowankoPytanko.Pages")]

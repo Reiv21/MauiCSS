@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="LosowankoPytanko.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:LosowankoPytanko.Views"
+    Title="System Losowania Uczniów"
+    Shell.BackgroundColor="{StaticResource Primary}"
+    Shell.ForegroundColor="{StaticResource BeeDark}"
+    Shell.TitleColor="{StaticResource BeeDark}">
+    <Shell.Resources>
+        <StyleSheet Source="Resources/Styles/AppStyles.css"/>
+    </Shell.Resources>
+    <ShellContent
+        Title="Losowanie"
+        ContentTemplate="{DataTemplate views:MainView}"
+        Route="MainView" />
+</Shell>
