@@ -1,117 +1,127 @@
+using System.IO;
+using Microsoft.Maui.Storage;
+
 namespace LosowankoPytanko.Views;
 
-public partial class MainView : ContentPage
+public partial class MainView : ContentPage, IDisposable
 {
-    private LosowankoPytanko.ViewModels.MainViewModel? _viewModel;
-    private readonly Random _confettiRandom = new Random();
-    private bool _isConfettiRunning;
-    private Windows.Media.Playback.MediaPlayer? _mediaPlayer;
+    private readonly Random _rng = new();
+    private bool _confettiRunning;
+    private Windows.Media.Playback.MediaPlayer? _player;
 
     public MainView()
     {
         InitializeComponent();
     }
 
+    // Subskrybujemy SpinCompleted gdy BindingContext się ustawia
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
 
-        if (_viewModel != null)
+        if (BindingContext is ViewModels.MainViewModel vm)
         {
-            _viewModel.SpinCompleted -= OnSpinCompleted;
-        }
-
-        _viewModel = BindingContext as LosowankoPytanko.ViewModels.MainViewModel;
-
-        if (_viewModel != null)
-        {
-            _viewModel.SpinCompleted += OnSpinCompleted;
+            vm.SpinCompleted += OnSpinCompleted;
         }
     }
 
     private void OnSpinCompleted(object? sender, EventArgs e)
     {
-        Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(async () =>
+        MainThread.BeginInvokeOnMainThread(async () =>
         {
-            PlayConfettiSound();
+            await PlaySoundAsync();
             await RunConfettiAsync();
         });
     }
 
-    private void PlayConfettiSound()
+    // Kopiuje confetti.mp3 z MauiAsset do cache przy pierwszym odtworzeniu,
+    // bo MediaPlayer wymaga pliku/URI, a nie strumienia
+    private async Task PlaySoundAsync()
     {
         try
         {
-            _mediaPlayer ??= new Windows.Media.Playback.MediaPlayer();
-            _mediaPlayer.Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///confetti.mp3"));
-            _mediaPlayer.Volume = 0.6;
-            _mediaPlayer.Play();
+            string path = Path.Combine(FileSystem.CacheDirectory, "confetti.mp3");
+
+            if (!File.Exists(path))
+            {
+                using var src = await FileSystem.OpenAppPackageFileAsync("confetti.mp3");
+                using var dst = File.Create(path);
+                await src.CopyToAsync(dst);
+            }
+
+            _player ??= new Windows.Media.Playback.MediaPlayer();
+            _player.Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(path));
+            _player.Volume = 0.8;
+            _player.Play();
         }
-        catch
+        catch (Exception ex)
         {
+            System.Diagnostics.Debug.WriteLine($"[Sound] {ex.Message}");
         }
     }
 
     private async Task RunConfettiAsync()
     {
-        if (_isConfettiRunning || ConfettiLayer == null)
-        {
-            return;
-        }
+        if (_confettiRunning || ConfettiLayer == null) return;
 
-        _isConfettiRunning = true;
+        _confettiRunning = true;
         ConfettiLayer.Children.Clear();
 
         await Task.Delay(16);
 
-        double width = ConfettiLayer.Width;
-        double height = ConfettiLayer.Height;
-        if (width <= 0 || height <= 0)
+        double w = ConfettiLayer.Width;
+        double h = ConfettiLayer.Height;
+
+        if (w <= 0 || h <= 0)
         {
-            _isConfettiRunning = false;
+            _confettiRunning = false;
             return;
         }
 
-        ResourceDictionary? resources = Application.Current?.Resources;
-        Color[] palette =
+        Color[] colors =
         {
-            resources != null && resources.TryGetValue("Primary", out object p) ? (Color)p : Colors.DarkSlateBlue,
-            resources != null && resources.TryGetValue("PrimaryDark", out object pd) ? (Color)pd : Colors.SlateBlue,
-            resources != null && resources.TryGetValue("Secondary", out object s) ? (Color)s : Colors.LightGray
+            Color.FromArgb("#1a237e"),
+            Color.FromArgb("#ff6f00"),
+            Color.FromArgb("#f5f5f5"),
+            Color.FromArgb("#4caf50"),
+            Color.FromArgb("#e53935"),
         };
 
-        int count = 24;
-        List<Task> animations = new List<Task>(count);
+        var tasks = new List<Task>(30);
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < 30; i++)
         {
-            double size = _confettiRandom.Next(6, 12);
-            double startX = _confettiRandom.Next(0, Math.Max(1, (int)width));
-            double drift = _confettiRandom.Next(-40, 40);
-            uint duration = (uint)_confettiRandom.Next(800, 1300);
-            double rotation = _confettiRandom.Next(-180, 180);
+            double size   = _rng.Next(6, 14);
+            double startX = _rng.Next(0, (int)w);
+            double drift  = _rng.Next(-60, 60);
+            uint   time   = (uint)_rng.Next(700, 1400);
 
-            BoxView piece = new BoxView
+            var piece = new BoxView
             {
-                WidthRequest = size,
-                HeightRequest = size * 0.7,
-                Color = palette[_confettiRandom.Next(0, palette.Length)],
-                Opacity = 0
+                WidthRequest  = size,
+                HeightRequest = size * 0.6,
+                Color         = colors[_rng.Next(colors.Length)],
+                Opacity       = 0,
+                Rotation      = _rng.Next(0, 360)
             };
 
             ConfettiLayer.Children.Add(piece);
-            AbsoluteLayout.SetLayoutBounds(piece, new Rect(startX, -10, size, size * 0.7));
+            AbsoluteLayout.SetLayoutBounds(piece, new Rect(startX, -14, size, size * 0.6));
 
-            Task anim = Task.WhenAll(
-                piece.FadeTo(1, 120),
-                piece.TranslateTo(drift, height + 20, duration, Easing.CubicIn),
-                piece.RotateTo(rotation, duration, Easing.CubicIn));
-
-            animations.Add(anim);
+            tasks.Add(Task.WhenAll(
+                piece.FadeTo(1, 100),
+                piece.TranslateTo(drift, h + 20, time, Easing.CubicIn),
+                piece.RotateTo(_rng.Next(-360, 360), time)));
         }
 
-        await Task.WhenAll(animations);
+        await Task.WhenAll(tasks);
         ConfettiLayer.Children.Clear();
-        _isConfettiRunning = false;
+        _confettiRunning = false;
+    }
+
+    public void Dispose()
+    {
+        _player?.Dispose();
+        _player = null;
     }
 }

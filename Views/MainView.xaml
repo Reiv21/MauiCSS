@@ -37,7 +37,7 @@
                                TextColor="{StaticResource BeeDark}"
                                StyleClass="section-header"/>
                         <HorizontalStackLayout Spacing="5">
-                            <Entry x:Name="ClassNameEntry"
+                            <Entry
                                    Placeholder="Nazwa nowej klasy"
                                    Text="{Binding NewClassName}"
                                    WidthRequest="150" />
@@ -48,10 +48,20 @@
                                     WidthRequest="40"
                                     StyleClass="primary-button"/>
                         </HorizontalStackLayout>
-                        <Picker x:Name="ClassPicker"
+                        <Picker
                                 Title="Wybierz klasę"
                                 ItemsSource="{Binding ClassNames}"
                                 SelectedItem="{Binding SelectedClassName}" />
+                        <HorizontalStackLayout Spacing="6" Margin="0,6,0,0">
+                            <Entry Placeholder="Nowa nazwa klasy"
+                                   Text="{Binding NewSelectedClassName}"
+                                   WidthRequest="180" />
+                            <Button Text="Zmień nazwę"
+                                    Command="{Binding RenameClassCommand}"
+                                    IsVisible="{Binding IsClassSelected}"
+                                    BackgroundColor="{StaticResource Primary}"
+                                    TextColor="{StaticResource BeeDark}" />
+                        </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="8">
                             <Button Text="Importuj"
                                     Command="{Binding ImportClassCommand}"
@@ -98,11 +108,11 @@
                                    Style="{StaticResource HelperText}"
                                    StyleClass="status-label"/>
                         </VerticalStackLayout>
-                        <Entry x:Name="LuckyNumberEntry"
+                        <Entry
                                Grid.Column="1"
                                Text="{Binding LuckyNumberString, Mode=TwoWay}"
                                Keyboard="Numeric"
-                               WidthRequest="120"
+                               WidthRequest="200"
                                VerticalOptions="Center"
                                Placeholder="Wpisz numer"
                                TextColor="{StaticResource BeeDark}"
@@ -128,7 +138,7 @@
                                FontAttributes="Bold"
                                TextColor="{StaticResource BeeDark}"
                                StyleClass="section-header"/>
-                        <Entry x:Name="StudentNameEntry"
+                        <Entry
                                Placeholder="Imię i nazwisko"
                                Text="{Binding NewStudentName}" />
                         <Button Text="Dodaj ucznia"
@@ -159,7 +169,7 @@
                     <VerticalStackLayout Spacing="12">
                         <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
                             <Label Grid.Column="0"
-                                   Text="Jednoręki bandyta"
+                                   Text=""
                                    FontSize="18"
                                    FontAttributes="Bold"
                                    TextColor="{StaticResource BeeDark}"
@@ -222,6 +232,7 @@
                                 </Frame>
                             </Grid>
                         </Frame>
+                        <!-- SmallConfettiLayer usunięto; konfetti rysowane jest w ConfettiLayer (code-behind) -->
                         <Label Text="{Binding DrawnStudentDisplay}"
                                FontSize="16"
                                TextColor="{StaticResource BeeDark}"

@@ -1,15 +1,18 @@
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using LosowankoPytanko.Models;
 using LosowankoPytanko.Services;
 using Microsoft.Maui.Storage;
 using System.Linq;
-using Microsoft.Maui.Platform;
+#if WINDOWS
+using WinRT.Interop;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using WinRT.Interop;
-using Microsoft.Maui.Media;
+using Microsoft.Maui.Platform;
+#endif
+using System.IO;
+using System;
+using System.Diagnostics;
 
 namespace LosowankoPytanko.ViewModels;
 
@@ -57,9 +60,11 @@ public class MainViewModel : BaseViewModel
         _slotDigit2 = "-";
         _slotDigit3 = "-";
         _isSpinning = false;
+        _newSelectedClassName = string.Empty;
 
         CreateClassCommand = new RelayCommand(CreateClass);
         DeleteClassCommand = new RelayCommand(DeleteClass);
+        RenameClassCommand = new RelayCommand(RenameClass);
         AddStudentCommand = new RelayCommand(AddStudent);
         RemoveStudentCommand = new RelayCommand<StudentViewModel>(RemoveStudent);
         _drawStudentCommand = new RelayCommand(DrawStudent, () => !_isSpinning);
@@ -226,6 +231,7 @@ public class MainViewModel : BaseViewModel
 
     public ICommand CreateClassCommand { get; }
     public ICommand DeleteClassCommand { get; }
+    public ICommand RenameClassCommand { get; }
     public ICommand AddStudentCommand { get; }
     public ICommand RemoveStudentCommand { get; }
     public ICommand DrawStudentCommand { get; }
@@ -234,6 +240,13 @@ public class MainViewModel : BaseViewModel
     public ICommand ResetQuestionedCommand { get; }
     public ICommand ImportClassCommand { get; }
     public ICommand ExportClassCommand { get; }
+
+    private string _newSelectedClassName; // pomocnicze pole dla zmiany nazwy
+    public string NewSelectedClassName
+    {
+        get => _newSelectedClassName;
+        set => SetProperty(ref _newSelectedClassName, value);
+    }
 
     private void LoadClassNames()
     {
@@ -552,7 +565,15 @@ public class MainViewModel : BaseViewModel
                 return;
             }
 
-            string? choice = await Application.Current?.MainPage?.DisplayActionSheet(
+            var mauiWindow = Application.Current?.Windows.FirstOrDefault();
+            var page = mauiWindow?.Page;
+            if (page == null)
+            {
+                StatusMessage = "Brak aktywnego okna do wyboru opcji";
+                return;
+            }
+
+            string? choice = await page.DisplayActionSheet(
                 "Import listy uczniów",
                 "Anuluj",
                 null,
@@ -577,6 +598,7 @@ public class MainViewModel : BaseViewModel
         catch (Exception ex)
         {
             StatusMessage = $"Błąd importu: {ex.Message}";
+            Debug.WriteLine(ex);
         }
     }
 
@@ -685,8 +707,11 @@ public class MainViewModel : BaseViewModel
             await Task.Delay(delay);
         }
 
+        // sekwencyjne ujawnienie finalnej wartości, po kolei
         SlotDigit1 = finalText;
+        await Task.Delay(180);
         SlotDigit2 = finalText;
+        await Task.Delay(180);
         SlotDigit3 = finalText;
     }
 
@@ -704,8 +729,53 @@ public class MainViewModel : BaseViewModel
         {
             await TextToSpeech.SpeakAsync($"Wylosowano numer {number}");
         }
-        catch
+        catch (Exception ex)
         {
+            Debug.WriteLine(ex);
         }
+    }
+
+    private void RenameClass()
+    {
+        if (string.IsNullOrWhiteSpace(SelectedClassName))
+        {
+            StatusMessage = "Wybierz klasę do zmiany nazwy!";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(NewSelectedClassName))
+        {
+            StatusMessage = "Podaj nową nazwę klasy!";
+            return;
+        }
+
+        if (_fileService.ClassExists(NewSelectedClassName))
+        {
+            StatusMessage = "Klasa o takiej nazwie już istnieje!";
+            return;
+        }
+
+        // próbujemy przeładować klasę, przypisać nową nazwę, zapisać pod nową nazwą i usunąć stary plik
+        SchoolClass? loaded = _fileService.LoadClass(SelectedClassName);
+        if (loaded == null)
+        {
+            StatusMessage = "Nie udało się załadować klasy do zmiany nazwy";
+            return;
+        }
+
+        string oldName = loaded.ClassName;
+        loaded.ClassName = NewSelectedClassName;
+        _fileService.SaveClass(loaded);
+        _fileService.DeleteClass(oldName);
+
+        // aktualizujemy listę i wybór
+        int idx = ClassNames.IndexOf(SelectedClassName);
+        if (idx >= 0)
+        {
+            ClassNames[idx] = NewSelectedClassName;
+        }
+        SelectedClassName = NewSelectedClassName;
+        NewSelectedClassName = string.Empty;
+        StatusMessage = $"Zmieniono nazwę klasy na: {SelectedClassName}";
     }
 }

@@ -3,3 +3,7 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+# lokalne
+wyjasnienie.txt
+docs.txt
