@@ -1,7 +1,7 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 using UIKit;
 
-namespace LosowankoPytanko;
+namespace MauiCSS;
 
 public class Program
 {

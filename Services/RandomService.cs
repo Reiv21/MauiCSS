@@ -1,6 +1,6 @@
-using LosowankoPytanko.Models;
+using MauiCSS.Models;
 
-namespace LosowankoPytanko.Services;
+namespace MauiCSS.Services;
 
 public class RandomService
 {
@@ -26,24 +26,9 @@ public class RandomService
     
     public List<Student> GetAvailableStudents(SchoolClass schoolClass, int globalLuckyNumber = 0)
     {
-        List<Student> available = new List<Student>();
-        
-        foreach (Student student in schoolClass.Students)
-        {
-            // Use provided lucky number (which may be global) or fall back to class one if not provided (for backward compat)
-            int effectiveLuckyNumber = globalLuckyNumber > 0 ? globalLuckyNumber : schoolClass.LuckyNumber;
-            
-            bool isAvailable = student.IsPresent 
-                && student.Number != effectiveLuckyNumber
-                && !student.WasQuestioned;
-            
-            if (isAvailable)
-            {
-                available.Add(student);
-            }
-        }
-        
-        return available;
+        return schoolClass.Students
+            .Where(s => s.IsPresent && s.Number != globalLuckyNumber && !s.WasQuestioned)
+            .ToList();
     }
     
     public void MarkStudentAsQuestioned(SchoolClass schoolClass, Student selectedStudent)

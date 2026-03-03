@@ -1,6 +1,6 @@
-using LosowankoPytanko.Models;
+using MauiCSS.Models;
 
-namespace LosowankoPytanko.ViewModels;
+namespace MauiCSS.ViewModels;
 
 public class StudentViewModel : BaseViewModel
 {
@@ -17,6 +17,7 @@ public class StudentViewModel : BaseViewModel
     {
         _student = student;
         _statusText = string.Empty;
+        // initially set to transparent so the status box does not take up space when empty
         _statusColor = Colors.Transparent;
         UpdateLuckyNumber(luckyNumber);
         UpdateStatus();

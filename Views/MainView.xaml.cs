@@ -1,7 +1,7 @@
 using System.IO;
 using Microsoft.Maui.Storage;
 
-namespace LosowankoPytanko.Views;
+namespace MauiCSS.Views;
 
 public partial class MainView : ContentPage, IDisposable
 {
@@ -14,7 +14,7 @@ public partial class MainView : ContentPage, IDisposable
         InitializeComponent();
     }
 
-    // Subskrybujemy SpinCompleted gdy BindingContext się ustawia
+    // subscribe to SpinCompleted when BindingContext is set
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
@@ -34,8 +34,8 @@ public partial class MainView : ContentPage, IDisposable
         });
     }
 
-    // Kopiuje confetti.mp3 z MauiAsset do cache przy pierwszym odtworzeniu,
-    // bo MediaPlayer wymaga pliku/URI, a nie strumienia
+    // Copies confetti.mp3 from MauiAsset to cache on first play
+    // because MediaPlayer needs a file/URI not a stream
     private async Task PlaySoundAsync()
     {
         try
@@ -60,6 +60,7 @@ public partial class MainView : ContentPage, IDisposable
         }
     }
 
+    // spawns confetti
     private async Task RunConfettiAsync()
     {
         if (_confettiRunning || ConfettiLayer == null) return;
@@ -118,7 +119,7 @@ public partial class MainView : ContentPage, IDisposable
         ConfettiLayer.Children.Clear();
         _confettiRunning = false;
     }
-
+    
     public void Dispose()
     {
         _player?.Dispose();

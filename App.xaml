@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:LosowankoPytanko"
-             xmlns:converters="clr-namespace:LosowankoPytanko.Converters"
-             x:Class="LosowankoPytanko.App">
+             xmlns:local="clr-namespace:MauiCSS"
+             xmlns:converters="clr-namespace:MauiCSS.Converters"
+             x:Class="MauiCSS.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

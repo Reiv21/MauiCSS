@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="LosowankoPytanko.AppShell"
+    x:Class="MauiCSS.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:LosowankoPytanko.Views"
-    Title="System Losowania Uczniów"
+    xmlns:views="clr-namespace:MauiCSS.Views"
+    Title="System Losowania UczniÃ³w"
     Shell.BackgroundColor="{StaticResource Primary}"
     Shell.ForegroundColor="{StaticResource BeeDark}"
     Shell.TitleColor="{StaticResource BeeDark}">

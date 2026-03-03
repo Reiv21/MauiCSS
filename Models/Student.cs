@@ -1,4 +1,4 @@
-namespace LosowankoPytanko.Models;
+namespace MauiCSS.Models;
 
 public class Student
 {
@@ -10,6 +10,8 @@ public class Student
 
     public Student()
     {
+        // used for TryParseStudentLine in FileService.cs
+        //i change properties one by one becase of parsing errors
     }
 
     public Student(int number, string name)

@@ -1,6 +1,6 @@
-﻿
+﻿﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LosowankoPytanko", "LosowankoPytanko.csproj", "{F2501AE9-B406-4013-A6E7-44F0F2EA2BCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiCSS", "MauiCSS.csproj", "{F2501AE9-B406-4013-A6E7-44F0F2EA2BCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

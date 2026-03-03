@@ -1,6 +1,6 @@
-﻿using Foundation;
+using Foundation;
 
-namespace LosowankoPytanko;
+namespace MauiCSS;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 
-namespace LosowankoPytanko;
+namespace MauiCSS;
 
 public static class MauiProgram
 {

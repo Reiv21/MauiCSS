@@ -1,4 +1,4 @@
-﻿namespace LosowankoPytanko;
+namespace MauiCSS;
 
 public partial class App : Application
 {

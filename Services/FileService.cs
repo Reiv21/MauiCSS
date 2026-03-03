@@ -1,6 +1,6 @@
-using LosowankoPytanko.Models;
+using MauiCSS.Models;
 
-namespace LosowankoPytanko.Services;
+namespace MauiCSS.Services;
 
 public class FileService
 {
@@ -132,8 +132,7 @@ public class FileService
     {
         List<string> lines = new List<string>
         {
-            schoolClass.ClassName,
-            "0"
+            schoolClass.ClassName
         };
 
         lines.AddRange(CreateStudentLines(schoolClass.Students));
@@ -153,7 +152,7 @@ public class FileService
 
     private SchoolClass? ParseClassLines(string[] lines)
     {
-        if (lines.Length < 2)
+        if (lines.Length < 1)
         {
             return null;
         }
@@ -163,12 +162,7 @@ public class FileService
             ClassName = lines[0]
         };
 
-        if (int.TryParse(lines[1], out int luckyNumber))
-        {
-            schoolClass.LuckyNumber = luckyNumber;
-        }
-
-        List<Student> students = ParseStudentLines(lines.Skip(2).ToArray());
+        List<Student> students = ParseStudentLines(lines.Skip(1).ToArray());
         schoolClass.Students.AddRange(students);
 
         return schoolClass;
@@ -230,6 +224,7 @@ public class FileService
 
     private string GetFilePath(string className)
     {
+        // sanitize class name to create a valid file name
         string sanitizedName = string.Join("_", className.Split(Path.GetInvalidFileNameChars()));
         return Path.Combine(_dataDirectory, $"{sanitizedName}.txt");
     }

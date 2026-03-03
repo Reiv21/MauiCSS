@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace LosowankoPytanko.Converters;
+namespace MauiCSS.Converters;
 
 public class BoolToEditTextConverter : IValueConverter
 {

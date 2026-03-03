@@ -8,12 +8,6 @@ ContentPage {
     background-color: #f5f5f5;
 }
 
-Grid > Frame {
-    background-color: #ffffff;
-    border-color: #e0e0e0;
-    margin: 5;
-}
-
 ^ContentPage Label {
     color: #212121;
 }
@@ -33,7 +27,7 @@ Grid > Frame {
 }
 
 .status-label {
-    font-size: 14;
+    font-size: 13;
     color: #757575;
     font-style: italic;
 }
@@ -51,31 +45,16 @@ Grid > Frame {
     padding: 12;
 }
 
-#ClassNameEntry,
-#StudentNameEntry,
-#LuckyNumberEntry {
-    background-color: #ffffff;
-    color: #212121;
-    -maui-placeholder-color: #9e9e9e;
-}
-
-#LuckyNumberEntry {
-    font-size: 20;
-    font-weight: bold;
-}
-
 .primary-button,
 .secondary-button,
 .danger-button,
 .success-button {
-    background-color: #1a237e;
     color: #ffffff;
     padding: 10;
     font-weight: bold;
 }
 
 .draw-button {
-    background-color: #1a237e;
     color: #ffffff;
     padding: 14;
     font-size: 20;
@@ -88,6 +67,33 @@ Grid > Frame {
     border-color: #e0e0e0;
     padding: 10;
     margin: 6;
+}
+
+.slot-digit {
+    font-size: 36;
+    font-weight: bold;
+}
+
+.student-name {
+    font-size: 16;
+}
+
+.student-status {
+    font-size: 12;
+    color: #6E6E6E;
+}
+
+.student-presence-label {
+    font-size: 10;
+}
+
+.drawn-display {
+    font-size: 16;
+}
+
+.number-badge {
+    color: #ffffff;
+    font-weight: bold;
 }
 
 CheckBox {
