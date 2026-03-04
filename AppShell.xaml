@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:MauiCSS.Views"
-    Title="System Losowania UczniÃ³w"
+    Title="System Losowania Uczniów"
     Shell.BackgroundColor="{StaticResource Primary}"
     Shell.ForegroundColor="{StaticResource BeeDark}"
     Shell.TitleColor="{StaticResource BeeDark}">

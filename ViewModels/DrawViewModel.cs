@@ -44,11 +44,14 @@ public class DrawViewModel : BaseViewModel
         private set
         {
             if (SetProperty(ref _drawnStudent, value))
+            {
                 OnPropertyChanged(nameof(DrawnStudentDisplay));
+                OnPropertyChanged(nameof(DrawnStudentName));
+                OnPropertyChanged(nameof(DrawnStudentNumber));
+            }
         }
     }
 
-    // computed text shown under the slot changes based on app state
     public string DrawnStudentDisplay
     {
         get
@@ -64,6 +67,34 @@ public class DrawViewModel : BaseViewModel
                 return "Brak dostępnych uczniów!\nWszyscy są nieobecni, odpytani\nlub mają szczęśliwy numerek";
 
             return "Kliknij przycisk poniżej";
+        }
+    }
+
+    public string DrawnStudentName
+    {
+        get
+        {
+            if (_drawnStudent != null) return _drawnStudent.Name;
+            if (_currentClass == null || _currentClass.Students.Count == 0)
+                return "Najpierw dodaj uczniów do klasy";
+            List<Student> available = _randomService.GetAvailableStudents(_currentClass, _luckyNumber);
+            if (available.Count == 0)
+                return "Brak dostępnych uczniów!";
+            return "Kliknij przycisk poniżej";
+        }
+    }
+
+    public string DrawnStudentNumber
+    {
+        get
+        {
+            if (_drawnStudent != null) return $"(Nr {_drawnStudent.Number})";
+            if (_currentClass == null || _currentClass.Students.Count == 0)
+                return " ";
+            List<Student> available = _randomService.GetAvailableStudents(_currentClass, _luckyNumber);
+            if (available.Count == 0)
+                return "Wszyscy są nieobecni, odpytani lub mają szczęśliwy numerek";
+            return " ";
         }
     }
 
@@ -106,13 +137,16 @@ public class DrawViewModel : BaseViewModel
         DrawnStudent = null;
         ResetSlotDigits();
         OnPropertyChanged(nameof(DrawnStudentDisplay));
+        OnPropertyChanged(nameof(DrawnStudentName));
+        OnPropertyChanged(nameof(DrawnStudentNumber));
     }
 
-    // called by MainViewModel when lucky number changes
     public void SetLuckyNumber(int luckyNumber)
     {
         _luckyNumber = luckyNumber;
         OnPropertyChanged(nameof(DrawnStudentDisplay));
+        OnPropertyChanged(nameof(DrawnStudentName));
+        OnPropertyChanged(nameof(DrawnStudentNumber));
     }
 
     private async void DrawStudent()

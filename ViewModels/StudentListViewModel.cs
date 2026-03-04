@@ -224,7 +224,7 @@ public class StudentListViewModel : BaseViewModel
 
             string? choice = await page.DisplayActionSheet(
                 "Import listy uczniów", "Anuluj", null,
-                "Dodaj do listy", "Zastąp liste");
+                "Dodaj do listy", "Zastąp listę");
 
             if (choice == "Dodaj do listy")
             {

@@ -194,10 +194,20 @@
                                 </Frame>
                             </Grid>
                         </Frame>
-                        <Label Text="{Binding Draw.DrawnStudentDisplay}"
+                        <Label Text="{Binding Draw.DrawnStudentName}"
                                StyleClass="drawn-display"
                                HorizontalOptions="Center"
-                               HorizontalTextAlignment="Center"/>
+                               HorizontalTextAlignment="Center"
+                               HeightRequest="28"
+                               VerticalOptions="Center"
+                               VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding Draw.DrawnStudentNumber}"
+                               StyleClass="drawn-display"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               HeightRequest="24"
+                               VerticalOptions="Center"
+                               VerticalTextAlignment="Center"/>
                         <Button Text="LOSUJ UCZNIA"
                                 Command="{Binding Draw.DrawStudentCommand}"
                                 BackgroundColor="{StaticResource PrimaryDark}"
