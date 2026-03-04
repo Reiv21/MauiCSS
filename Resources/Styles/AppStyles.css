@@ -12,6 +12,30 @@ ContentPage {
     color: #212121;
 }
 
+^Layout {
+    padding: 2;
+}
+
+^ContentView {
+    margin: 2;
+}
+
+VerticalStackLayout > Label {
+    margin: 8;
+    color: #3E2723;
+    font-style: italic;
+}
+
+Frame > VerticalStackLayout > Button {
+    margin: 8;
+    padding: 12;
+}
+
+HorizontalStackLayout > Button {
+    margin: 6;
+    padding: 10;
+}
+
 .title-label {
     font-size: 24;
     font-weight: bold;
