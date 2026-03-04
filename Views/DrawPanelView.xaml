@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiCSS.Views.DrawPanelView">
+    <Frame BackgroundColor="{StaticResource Secondary}"
+           BorderColor="{StaticResource Gray200}"
+           CornerRadius="15"
+           Padding="20"
+           IsVisible="{Binding Class.IsClassSelected}">
+        <VerticalStackLayout Spacing="12">
+            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                <Label Grid.Column="0" Text=""
+                       HorizontalOptions="Center"
+                       StyleClass="section-header"/>
+                <Frame Grid.Column="1"
+                       BackgroundColor="{StaticResource PrimaryDark}"
+                       CornerRadius="10" Padding="6,10"
+                       WidthRequest="14" HeightRequest="60"
+                       VerticalOptions="Center"/>
+            </Grid>
+            <Frame BackgroundColor="{StaticResource PrimaryDark}"
+                   BorderColor="{StaticResource Gray200}"
+                   CornerRadius="14" Padding="12">
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" HorizontalOptions="Center">
+                    <Frame Grid.Column="0"
+                           BackgroundColor="{StaticResource BeeLight}"
+                           BorderColor="{StaticResource Gray200}"
+                           CornerRadius="10" Padding="8"
+                           WidthRequest="70" HeightRequest="90">
+                        <Label Text="{Binding Draw.SlotDigit1}"
+                               StyleClass="slot-digit"
+                               HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Frame>
+                    <Frame Grid.Column="1"
+                           BackgroundColor="{StaticResource BeeLight}"
+                           BorderColor="{StaticResource Gray200}"
+                           CornerRadius="10" Padding="8"
+                           WidthRequest="70" HeightRequest="90">
+                        <Label Text="{Binding Draw.SlotDigit2}"
+                               StyleClass="slot-digit"
+                               HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Frame>
+                    <Frame Grid.Column="2"
+                           BackgroundColor="{StaticResource BeeLight}"
+                           BorderColor="{StaticResource Gray200}"
+                           CornerRadius="10" Padding="8"
+                           WidthRequest="70" HeightRequest="90">
+                        <Label Text="{Binding Draw.SlotDigit3}"
+                               StyleClass="slot-digit"
+                               HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Frame>
+                </Grid>
+            </Frame>
+            <Label Text="{Binding Draw.DrawnStudentName}"
+                   StyleClass="drawn-display"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   HeightRequest="28"
+                   VerticalOptions="Center"
+                   VerticalTextAlignment="Center"/>
+            <Label Text="{Binding Draw.DrawnStudentNumber}"
+                   StyleClass="drawn-display"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   HeightRequest="24"
+                   VerticalOptions="Center"
+                   VerticalTextAlignment="Center"/>
+            <Button Text="LOSUJ UCZNIA"
+                    Command="{Binding Draw.DrawStudentCommand}"
+                    BackgroundColor="{StaticResource PrimaryDark}"
+                    Padding="20" CornerRadius="15"
+                    HorizontalOptions="Center"
+                    IsEnabled="{Binding Draw.IsSpinning, Converter={StaticResource InverseBoolConverter}}"
+                    StyleClass="draw-button"/>
+        </VerticalStackLayout>
+    </Frame>
+</ContentView>

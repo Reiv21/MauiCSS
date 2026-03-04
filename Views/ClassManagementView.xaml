@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiCSS.Views.ClassManagementView">
+    <Frame BackgroundColor="{StaticResource Secondary}"
+           BorderColor="{StaticResource Gray200}"
+           CornerRadius="10"
+           Padding="15">
+        <VerticalStackLayout Spacing="10">
+            <Label Text="Zarządzanie klasami"
+                   StyleClass="section-header"/>
+            <HorizontalStackLayout Spacing="5">
+                <Entry Placeholder="Nazwa nowej klasy"
+                       Text="{Binding Class.NewClassName}"
+                       WidthRequest="150" />
+                <Button Text="+"
+                        Command="{Binding Class.CreateClassCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        WidthRequest="40"
+                        StyleClass="primary-button"/>
+            </HorizontalStackLayout>
+            <Picker Title="Wybierz klasę"
+                    ItemsSource="{Binding Class.ClassNames}"
+                    SelectedItem="{Binding Class.SelectedClassName}" />
+            <HorizontalStackLayout Spacing="6" Margin="0,6,0,0">
+                <Entry Placeholder="Nowa nazwa klasy"
+                       Text="{Binding Class.NewSelectedClassName}"
+                       WidthRequest="180" />
+                <Button Text="Zmień nazwę"
+                        Command="{Binding Class.RenameClassCommand}"
+                        IsVisible="{Binding Class.IsClassSelected}"
+                        BackgroundColor="{StaticResource Primary}" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Importuj"
+                        Command="{Binding StudentList.ImportClassCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        IsVisible="{Binding Class.IsClassSelected}"
+                        StyleClass="primary-button" />
+                <Button Text="Eksportuj"
+                        Command="{Binding StudentList.ExportClassCommand}"
+                        BackgroundColor="{StaticResource PrimaryDark}"
+                        IsVisible="{Binding Class.IsClassSelected}"
+                        StyleClass="secondary-button" />
+            </HorizontalStackLayout>
+            <Label Text="Eksport zapisuje do wybranego miejsca"
+                   Style="{StaticResource HelperText}"
+                   StyleClass="status-label" />
+            <Button Text="Usuń klasę"
+                    Command="{Binding Class.DeleteClassCommand}"
+                    BackgroundColor="{StaticResource PrimaryDark}"
+                    IsVisible="{Binding Class.IsClassSelected}"
+                    StyleClass="danger-button"/>
+        </VerticalStackLayout>
+    </Frame>
+</ContentView>
+

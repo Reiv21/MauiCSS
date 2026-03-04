@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiCSS.Views.LuckyNumberView">
+    <Frame BackgroundColor="{StaticResource Secondary}"
+           BorderColor="{StaticResource Primary}"
+           CornerRadius="10"
+           Padding="15">
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="15">
+            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                <Label Text="Szczęśliwy numerek"
+                       StyleClass="section-header"/>
+                <Label Text="{Binding LuckyNumber.LuckyNumber}"
+                       HorizontalOptions="Center"
+                       StyleClass="lucky-number-label"/>
+                <Label Text="Tutaj możesz wpisać szczęśliwy numerek (ręcznie) lub użyć przycisku."
+                       Style="{StaticResource HelperText}"
+                       StyleClass="status-label"/>
+            </VerticalStackLayout>
+            <Entry Grid.Column="1"
+                   Text="{Binding LuckyNumber.LuckyNumberString, Mode=TwoWay}"
+                   Keyboard="Numeric"
+                   WidthRequest="200"
+                   VerticalOptions="Center"
+                   Placeholder="Wpisz numer"
+                   TextColor="{StaticResource BeeDark}"
+                   BackgroundColor="{StaticResource Secondary}" />
+            <Button Grid.Column="2"
+                    Text="Losuj numerek"
+                    Command="{Binding LuckyNumber.GenerateLuckyNumberCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    VerticalOptions="Center"
+                    StyleClass="primary-button"/>
+        </Grid>
+    </Frame>
+</ContentView>
+

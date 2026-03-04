@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiCSS.Views.StudentControlsView">
+    <Frame BackgroundColor="{StaticResource Secondary}"
+           BorderColor="{StaticResource Gray200}"
+           CornerRadius="10"
+           Padding="15"
+           IsVisible="{Binding Class.IsClassSelected}">
+        <VerticalStackLayout Spacing="10">
+            <Label Text="Dodaj ucznia"
+                   StyleClass="section-header"/>
+            <Entry Placeholder="Imię i nazwisko"
+                   Text="{Binding StudentList.NewStudentName}" />
+            <Button Text="Dodaj ucznia"
+                    Command="{Binding StudentList.AddStudentCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    StyleClass="success-button"/>
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="{Binding StudentList.IsEditing, Converter={StaticResource BoolToEditTextConverter}}"
+                        Command="{Binding StudentList.ToggleEditModeCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        StyleClass="primary-button"/>
+                <Button Text="Resetuj"
+                        Command="{Binding StudentList.ResetQuestionedCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        StyleClass="primary-button"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Frame>
+</ContentView>
+
